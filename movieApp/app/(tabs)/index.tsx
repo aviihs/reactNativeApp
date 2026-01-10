@@ -1,12 +1,27 @@
 import SearchBAr from "@/components/SearchBAr";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import { Image, ScrollView, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useRouter } from "expo-router";
+import useFetch from "@/services/useFetch";
+import { fetchMovies } from "@/services/api";
+import MoviesCard from "@/components/MoviesCard";
 
 export default function App() {
-
   const router = useRouter();
+
+  const {
+    data: movies,
+    loading: moviesLoading,
+    error: moviesError,
+  } = useFetch(() => fetchMovies({ query: "" }));
 
   return (
     <View className="flex-1 bg-primary">
@@ -17,12 +32,49 @@ export default function App() {
         contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}
       >
         <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
-        <View className="flex-1 mt-5">
-          <SearchBAr 
-          onPress={() => router.push('/Search')}
-          placeholder="Search for movies or TV shows"
+
+        {moviesLoading ? (
+          <ActivityIndicator
+            size="large"
+            color="#0000ff"
+            className="mt-10 self-center"
           />
-        </View>
+        ) : moviesError ? (
+          <Text className="text-red-500 text-center">
+            Error: {moviesError?.message}
+          </Text>
+        ) : (
+          <View className="flex-1 mt-5">
+            <SearchBAr
+              onPress={() => router.push("/Search")}
+              placeholder="Search for movies or TV shows"
+            />
+
+            <>
+              <Text className="text-lg text-white font-bold mt-5 mb-3">
+                Latest Movies
+              </Text>
+              <FlatList
+                data={movies}
+                renderItem={({ item }) => (
+                  // <Text className="text-white text-sm">{item.title}</Text>
+                  <MoviesCard 
+                  {...item}
+                  />
+                )}
+                 keyExtractor={(item) => item.id.toString()}
+                 numColumns={3}
+                 columnWrapperStyle={{ justifyContent: 'flex-start',
+                   marginBottom: 10,
+                   paddingRight: 5,
+                    gap: 20
+                  }}
+                  className="mt-2 pb-32"
+                  scrollEnabled={false}
+              />
+            </>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
