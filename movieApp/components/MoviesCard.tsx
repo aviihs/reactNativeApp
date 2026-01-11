@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
-import { icons } from "@/constants/icons";
+
 
 const MoviesCard = ({
   id,
@@ -17,7 +17,7 @@ const MoviesCard = ({
           source={{
             uri: poster_path
               ? `https://image.tmdb.org/t/p/w500${poster_path}`
-              : "https://placehold.co/600x400/1a1a1a/ffffff.png",
+              : "https://placehold.com/600x400/1a1a1a/ffffff.png",
           }}
           className="w-full h-52 rounded-lg"
           resizeMode="cover"
