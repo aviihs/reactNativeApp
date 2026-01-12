@@ -46,6 +46,7 @@ export default function App() {
         ) : (
           <View className="flex-1 mt-5">
             <SearchBAr
+            value=""
               onPress={() => router.push("/Search")}
               placeholder="Search for movies or TV shows"
             />
