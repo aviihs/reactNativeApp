@@ -7,6 +7,7 @@ import { fetchMovies } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import { icons } from "@/constants/icons";
 import SearchBAr from "@/components/SearchBAr";
+import { updateSearchCount } from "@/services/appwrite";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,10 +20,14 @@ const Search = () => {
   reset,
 } = useFetch(() => fetchMovies({ query: searchQuery }), false);
 
- useEffect(() => {
-  const timeout = setTimeout(async() => {
-    if (searchQuery.trim()) {
-      await refetch();
+ useEffect(()  => {
+
+   
+   const timeout = setTimeout(async() => {
+     if (searchQuery.trim()) {
+       await refetch();
+       if(movies?.length > 0 && movies?.[0])
+         await updateSearchCount(searchQuery, movies[0]);  // Update search count in Appwrite
   }
   else {
     reset();                                              //Debouncingggg
