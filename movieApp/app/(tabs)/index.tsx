@@ -13,9 +13,16 @@ import { useRouter } from "expo-router";
 import useFetch from "@/services/useFetch";
 import { fetchMovies } from "@/services/api";
 import MoviesCard from "@/components/MoviesCard";
+import { getTrendingMovies } from "@/services/appwrite";
 
 export default function App() {
   const router = useRouter();
+
+  const {
+    data: trendingMovies,
+    loading: trendingLoading,
+    error: trendingError,
+  } = useFetch(getTrendingMovies);
 
   const {
     data: movies,
@@ -33,13 +40,13 @@ export default function App() {
       >
         <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
 
-        {moviesLoading ? (
+        {moviesLoading || trendingLoading ?(
           <ActivityIndicator
             size="large"
             color="#0000ff"
             className="mt-10 self-center"
           />
-        ) : moviesError ? (
+        ) : moviesError || trendingError ? (
           <Text className="text-red-500 text-center">
             Error: {moviesError?.message}
           </Text>
