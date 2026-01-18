@@ -4,7 +4,7 @@ import { icons } from '@/constants/icons'
 interface Props {
   onPress: () => void;
   placeholder: string;
-  value : string;
+  value ?: string;
   onChangeText?: (text: string) => void;
 }
 
