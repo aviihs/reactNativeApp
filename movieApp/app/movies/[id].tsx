@@ -1,15 +1,26 @@
-import { View, Text, Image, ScrollView } from "react-native";
-import React, { use } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import React from "react";
+import { router, useLocalSearchParams } from "expo-router";
 import { fetchMovieDetails } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import { icons } from "@/constants/icons";
+interface MovieInfoProps{
+  label: string;
+  value?: string | number | null;
+}
+
+const MovieInfo = ({ label, value}: MovieInfoProps) => (
+  <View className="flex-col items-start justify-center mt-5">
+    <Text className="text-light-300 font-normal text-sm">{label}</Text>
+    <Text className="text-light-300 font-bold text-sm mt-2">{value || 'N/A'}</Text>
+  </View>
+)
 
 const MovieDetails = () => {
   const { id } = useLocalSearchParams();
 
   const { data: movie, loading } = useFetch(() =>
-    fetchMovieDetails(id as string)
+    fetchMovieDetails(id as string),
   );
 
   return (
@@ -41,9 +52,28 @@ const MovieDetails = () => {
             <Text className="text-white text-sm font-bold">
               {Math.round(movie?.vote_average ?? 0)} / 10
             </Text>
+            <Text className="text-sm text-light-200">
+              {" "}
+              ({movie?.vote_count}votes)
+            </Text>
           </View>
+            <MovieInfo label="Overview" value={movie?.overview}/>
+            <MovieInfo label="Genre" value={movie?.genres?.map((g)=> g.name).join(' - ') || 'N/A'} />
+            <View className="flex flex-row justify-between w-1/2">
+            <MovieInfo label="Budget" value={`$${((movie?.budget ?? 0) / 1_000_000).toFixed(1)} M`}/>
+             
+            <MovieInfo label="Revenue" value={  movie?.revenue  ? `$${(movie.revenue / 1_000_000).toFixed(1)} M` : "N/A" } />
+            </View>
+            <MovieInfo label="Production Companies" value={movie?.production_companies.map((c)=> c.name).join(" - ") || "N/A"} />
+
         </View>
       </ScrollView>
+      <TouchableOpacity className="bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50" onPress={router.back}>
+        <Image
+        className="size-6 mr-1 mt-1 rotate-180" tintColor='#fff' source={icons.arrow} 
+        />
+        <Text className="text-white font-semibold text-base">Go back</Text>
+      </TouchableOpacity>
     </View>
   );
 };
