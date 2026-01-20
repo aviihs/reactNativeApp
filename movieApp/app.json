@@ -2,14 +2,7 @@
   "expo": {
     "name": "Movie App",
     "slug": "movieApp",
-    "splash": {
-      "image": "./app/assets/images/logo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff",
-      "dark": {
-        "backgroundColor": "#000000"
-      }
-    },
+   
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/logo.png",
@@ -17,12 +10,12 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.movieApp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/images/logo.png",
-
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -52,6 +45,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6db6428c-523e-40bb-90e0-8aae47df014e"
+      }
     }
   }
 }
