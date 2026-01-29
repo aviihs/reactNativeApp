@@ -67,13 +67,13 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
   const isLoggedIn = !!user;
 
-  return (
+  return ( 
     <GlobalContext.Provider
       value={{
         user,
         isLoggedIn,
         loading,
-        refetch,
+        refetch, 
       }}
     >
       {children}
